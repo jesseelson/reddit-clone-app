@@ -466,3 +466,17 @@ Completed 500 Internal Server Error in 24ms (ActiveRecord: 0.0ms | Allocations: 
 LoadError (cannot load such file -- sassc):
   
 app/views/layouts/application.html.erb:9
+Started GET "/" for 127.0.0.1 at 2023-04-03 20:24:35 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by PublicController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering public/index.html.erb within layouts/application
+  Rendered public/index.html.erb within layouts/application (Duration: 0.7ms | Allocations: 281)
+  Rendered layout layouts/application.html.erb (Duration: 23.8ms | Allocations: 4874)
+Completed 500 Internal Server Error in 33ms (ActiveRecord: 0.0ms | Allocations: 7842)
+
+
+  
+LoadError (cannot load such file -- sassc):
+  
+app/views/layouts/application.html.erb:9
