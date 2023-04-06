@@ -1,0 +1,96 @@
+<%= title @post.title %>
+<% content_for :header_info do %>
+  <p role="button" class="h4 mb-2 mt-2 d-flex align-items-center"><%= link_to "Reddit", root_path, class: "text-decoration-none" %></p>
+  <%= link_to @post.community.url, @post.community, class: "h6 mb-2 mt-2 mx-2 text-decoration-none text-dark fw-bold align-items-center d-flex" %>
+<% end %>
+<div class="row mb-2">
+  <div class="col-sm-5 d-inline d-sm-none">
+    <%= render partial: "communities/info", locals: { community: @post.community } %>
+  </div>
+  <div class="col-sm-8">
+    <div class="row mt-2">
+      <div class="d-flex">
+        <div>
+          <div class="mb-1 d-flex flex-row">
+            <div style="margin-left: 15px; width: 10px">
+              <%= render partial: "posts/post_votes", locals: { post: @post} %>
+            </div>
+            <div class="mx-3 d-flex flex-column justify-content-center align-items-start justify-con">
+              <%= link_to @post.title, community_post_path(@post.community_id, @post), class: "h4 mb-0 text-decoration-none" %>
+              <small>submitted <%= time_ago_in_words @post.created_at %> ago by <%= link_to @post.account.username,
+                profile_path(@post.account.username), class: "text-decoration-none" %>
+              </small>
+              <div>
+                <small id="post-comment" class="post-small-links">
+                  <%= pluralize @post.total_comments, "comment" %>
+                </small>
+                <% if account_signed_in? %>
+                  <% if @post.account_id===current_account.id %>
+                    <small class="mx-2 post-small-links">
+                      <%= link_to "delete" , community_post_path(@post.community_id, @post.id), remote: true, method: :delete,
+                        data: { confirm: 'Delete this post? This is irreversible.' }, class: "text-decoration-none" %>
+                    </small>
+                  <% end%>
+                <% end%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="mb-0 p-3 card rounded">
+        <%= @post.content %>
+      </div>
+    </div>
+    <div class="row">
+      <p class="mb-0 h5">Leave a comment</p>
+    </div>
+    <div class="row">
+      <%= form_for @comment, remote: true, method: :post, html: {id: "new_comment" } do |f| %>
+        <%= f.hidden_field :post_id, value: @post.id %>
+        <div id="comment-form" class="form-label">
+          <%= f.text_area :message, placeholder: "Type comment" , class: "form-control" %>
+        </div>
+        <%= f.submit "save" , class: "btn btn-sm btn-secondary mb-2" %>
+      <% end%>
+    </div>
+    <div class="row">
+      <div id="post-comments">
+        <%= render partial: "posts/comments" , locals: {comments: @post.comments.order("id")}%>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 d-none d-sm-block">
+    <div class="row">
+      <div>
+        <p class="mb-0 bg-white card-body">
+          <strong>this post was submitted on <%= @post.created_at.strftime("%d %b %Y") %></strong>
+          <div class="d-flex align-items-end card-body bg-white pt-0">
+            <p class="mb-0">
+              <strong><%=pluralize @post.score, "point" %> <small> </strong> (<%= @post.percentage_upvoted.truncate %>% upvoted)</small>
+            </p>
+          </div>
+          <div class="d-flex align-items-end card-body bg-white pt-0">
+            <p class="mb-0 text-break">
+              <strong><small><%= link_to @link.short.gsub("https://", ""), @link.short, class: "text-decoration-none" %></small></strong>
+            </p>
+          </div>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <h5 class="mb-1">
+        <%= @post.community.url %>
+      </h5>
+      <div class="d-flex align-items-center">
+        <% if @is_subscribed %>
+          <span><%= button_to "leave", subscription_path(@post.community.id), method: :delete, class: "btn btn-sm btn-danger", style:"font-size: 70%" %></span>
+        <% else %>
+          <%= button_to "join", subscription_path(@post.community.id), method: :create, class: "btn btn-sm btn-success", style:"font-size: 70%" %>
+        <% end %>
+        <span style="font-size: 70%">&nbsp;<%= pluralize @post.community.subscribers.count, "subscriber" %></span>
+      </div>
+    </div>
+  </div>
+</div>

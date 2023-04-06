@@ -1,0 +1,29 @@
+<% content_for :title do %>
+  <% if request.original_url == "https://reddit-clone-rails.herokuapp.com/new" %>
+    newest submissions
+  <% elsif request.original_url == "https://reddit-clone-rails.herokuapp.com/" %>
+    reddit: the front page of the internet
+  <% elsif request.original_url == "https://reddit-clone-rails.herokuapp.com/top" %>
+    top scoring links: all
+  <% end %>
+<% end %>
+
+<% content_for :header_info do %>
+  <p role="button" class="h4 mb-2 mt-2 d-flex align-items-center"><%= link_to "Reddit", root_path, class: "text-decoration-none" %></p>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-8 d-none d-sm-inline">
+    <%= render partial: "posts/lists" %>
+  </div>
+  <div class="col-sm-4 d-none d-sm-inline">
+    <div class="mb-2"><%= link_to "Create New Community", new_community_path, class: "w-100 btn btn-primary" %></div>
+  </div>
+  <div class="d-sm-none">
+    <div class="mb-2"><%= link_to "Create New Community", new_community_path, class: "w-100 btn btn-primary" %></div>
+  </div>
+  <div class="d-sm-none">
+    <%= render partial: "posts/lists" %>
+  </div>
+</div>
+

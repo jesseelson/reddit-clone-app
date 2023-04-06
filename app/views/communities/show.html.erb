@@ -1,0 +1,37 @@
+<% content_for :title do %>
+  <%= @community.url %>
+<% end %>
+<% content_for :header_info do %>
+  <p role="button" class="h4 mb-2 mt-2 d-flex align-items-center"><%= link_to "Reddit", root_path, class: "text-decoration-none" %></p>
+  <%= link_to @community.url, @community, class: "h6 mb-2 mt-2 mx-2 text-decoration-none fw-bold text-dark align-items-center d-flex" %>
+<% end %>
+
+<div class="row mb-3">
+  <div class="col-sm-5 d-inline d-sm-none">
+    <%= render partial: "communities/info", locals: { community: @community } %>
+  </div>
+  <div class="col-sm-8">
+    <%= render partial: "posts/lists", locals: { posts: @posts } %>
+  </div>
+  <div class="col-sm-4 d-none d-sm-inline">
+    <div class="d-flex flex-column">
+      <% if @is_subscribed %>
+        <%= link_to "Create New Post", new_community_post_path(@community.slug), method: :get, class: "btn btn-primary float-end" %>
+      <% else %>
+        <%= link_to "Join Community", subscription_path(@community.id), method: :create, class: "btn btn-success float-end" %>
+      <% end %>
+      <div class="card p-3 mt-2">
+        <div class="mb-2 h5">About</div>
+        <div ><%= @community.summary %></div>
+        <div class="mb-2"><%= pluralize @subscribers_count, "member" %> </div>
+        <% if @is_subscribed %>
+          <div><%= button_to "Leave Community", subscription_path(@community.id), method: :delete, class: "btn btn-sm btn-outline-danger" %></div>
+        <% end %>
+      </div>
+      <div class="card p-3 mt-2">
+        <div class="mb-2 h5">Rules</div>
+        <%= simple_format @community.rules %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<% @count = 0 %>
+<% if @posts.length === 0 && params[:controller] === "posts" %>
+  <% @posts = Post.all.order("upvotes DESC") %>
+  <div class="d-flex justify-content-center"><strong>Showing All Posts.</strong></div>
+  <div class="d-flex justify-content-center mb-2"><strong>Join communities to see their posts on your home page.</strong></div>
+<% end %>
+<% @posts.each do |post| %>
+  <div id="post-<%= post.id %>" class="card p-3 mb-3">
+    <div class="row">
+      <div class="mt-2 col-sm-1 px-2 col-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <small style="color: rgb(102,102,102); padding-right: 10px" class="d-flex align-items-center"><%= @count += 1 %> </small>
+          <%= render partial: "posts/post_votes", locals: { post: post} %>
+        </div>
+      </div>
+      <div class="col-sm-9 col-9">
+        <h4 class="mb-0">
+          <%= link_to post.title, community_post_path(post.community.url, post), class: "text-decoration-none" %>
+        </h4>
+        <p class="mb-0">
+          <small>Submitted <%= time_ago_in_words post.created_at %> ago by  <%= link_to post.account.username, profile_path(post.account.username), class: "text-decoration-none"  %> to <%= link_to post.community.url, post.community, class: "text-decoration-none" %>  </small>
+        </p>
+        <p class="d-flex">
+          <small class="post-small-links"><%= link_to (pluralize post.total_comments, "comment"), community_post_path(post.community_id, post, anchor: 'post-comments'), class: "text-decoration-none"  %> </small>
+          <% if account_signed_in? %>
+            <% if post.account_id === current_account.id %>
+              <small class="mx-2 post-small-links"><%= link_to "delete", community_post_path(post.community_id, post.id), remote: true, method: :delete, data: { confirm: 'Delete this post? This is irreversible.' }, class: "text-decoration-none" %></small>
+            <% end%>
+          <% end%>
+        </p>
+        <p class="mb-0">
+          <%= truncate(strip_tags(post.content.to_s), length: 140) %>
+          <% if post.content.to_s.length > 140 %>
+            <%= link_to "see more", community_post_path(post.community.url, post), class: "text-decoration-none" %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,42 @@
+<% content_for :title do %>
+  overview for <%= @profile.username %>
+<% end %>
+
+<% content_for :header_info do %>
+  <p role="button" class="h4 mb-2 mt-2 d-flex align-items-center"><%= link_to "Reddit", root_path, class: "text-decoration-none" %></p>
+  <div class="d-flex mx-2 align-items-center fw-bold"><%= @profile.username %></div>
+<% end %>
+
+<div class="row">
+<div class="col-sm-8">
+      <h5>Recent Posts</h5>
+      <%= render partial: "posts/lists", locals: {posts: @posts}  %>
+    </div>
+  <div class="col-sm-4">
+    <div class="container p-0">
+      <div class="row ">
+        <div class="col-md-6">
+          <%# <p class="h4"><%=# @profile.full_name</p>  %>
+          <p class="h4"><%= @profile.username %></p>
+        </div>
+        <%# <div class="col-md-6">
+          Profile Picture
+        </div> %>
+      </div>
+    </div>
+    <%# <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, sit dolorem consequuntur rerum nesciunt laborum? Quae dolore ullam, quisquam, fugit veniam laudantium, tempore totam placeat inventore eligendi soluta deleniti nostrum.</p> %>
+    <p class="mb-2">Karma: <span id="karma" style="color: <%= changeKarmaColor @karma %>"><%= @karma %></span></p>
+    <p>Redditor since: <%= @profile.created_at.strftime("%m/%d/%Y") %></p>
+    <h5>Community Subscriptions</h4>
+    <div class="mb-4">
+      <% @subscriptions.each do |subscription| %>
+        <% if subscription == @subscriptions.last %>
+          <%= link_to subscription.community.url.capitalize, subscription.community  %>
+        <% else %>
+          <%= link_to subscription.community.url.capitalize, subscription.community %>, 
+        <% end %>
+      <% end%>
+      </div>
+    </div>
+    
+  </div>

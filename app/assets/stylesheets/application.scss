@@ -1,18 +1,56 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+// app/assets/stylesheets/application.scss
+// ...
+@import "bootstrap";
+@import 'actiontext.css';
+// ...
 
- @import "bootstrap/scss/bootstrap";
+// .card {
+
+//         box-shadow: 0 8px 8px -4px lightblue;
+// }
+
+#up-arrow {
+    transform: scale(1.5);
+
+    &.active {
+            color: #fb5420;
+        }
+}
+
+#down-arrow {
+    transform: scale(1.5);
+
+    &.active {
+            color: #9494FF;;
+        }
+}
+
+#up-arrow:hover {
+    // transform: translateY(-5px);
+    color: #fb5420;
+    cursor: pointer;
+}
+
+#down-arrow:hover {
+    color: #9494FF;
+    cursor: pointer;
+}
+
+.override a {
+    color: #fb5420 !important;
+}
+
+.post-small-links {
+    color: rgb(102, 102, 102);
+    font-weight: 700
+}
+
+.post-small-links a {
+    color: rgb(102, 102, 102);
+    font-weight: 700
+}
+
+#community_header {
+    background-color: #f0f0f0;
+}
  
